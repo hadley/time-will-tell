@@ -110,10 +110,8 @@ class TimerViewModel: ObservableObject {
             currentZone = .black
         }
 
-        if previousZone != currentZone {
-            if currentZone == .yellow || currentZone == .red {
-                hapticManager.zoneTransition()
-            }
+        if previousZone != currentZone && currentZone != .black {
+            hapticManager.zoneTransition()
         }
     }
 
