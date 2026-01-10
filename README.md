@@ -13,3 +13,9 @@ A simple iOS app to help speakers track their remaining time with color-coded vi
 - Haptic vibration alerts when entering warning zones
 - Configurable talk duration and warning thresholds
 - Screen stays awake during countdown
+
+## Screenshots
+
+![Black - Safe zone](appstore/screenshot-black.png)
+![Yellow - Warning](appstore/screenshot-orange.png)
+![Red - Danger](appstore/screenshot-red.png)
