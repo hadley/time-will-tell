@@ -32,6 +32,5 @@ The timer transitions through color-coded zones based on remaining time:
 - Zone thresholds are configurable; transitions trigger haptic feedback via `HapticManager`
 
 **Display Logic:**
-- In black zone: shows rounded minutes ("5 min")
-- In yellow/red/flashing zones: shows MM:SS format
+- Always shows MM:SS format
 - `ScalableTimerText` auto-scales text to fill available screen space

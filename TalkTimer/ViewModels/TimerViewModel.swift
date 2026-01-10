@@ -16,15 +16,9 @@ class TimerViewModel: ObservableObject {
     private let hapticManager = HapticManager()
 
     var displayText: String {
-        switch currentZone {
-        case .black:
-            let minutes = Int(ceil(Double(remainingSeconds) / 60.0))
-            return "\(minutes) min"
-        case .yellow, .red, .flashing:
-            let minutes = remainingSeconds / 60
-            let seconds = remainingSeconds % 60
-            return String(format: "%02d:%02d", minutes, seconds)
-        }
+        let minutes = remainingSeconds / 60
+        let seconds = remainingSeconds % 60
+        return String(format: "%02d:%02d", minutes, seconds)
     }
 
     init() {
