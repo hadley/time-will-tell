@@ -14,6 +14,7 @@
 		A11111110000000000000005 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* SettingsView.swift */; };
 		A11111110000000000000006 /* ScalableTimerText.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* ScalableTimerText.swift */; };
 		A11111110000000000000007 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000007 /* HapticManager.swift */; };
+		A11111110000000000000009 /* TimerScrubber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000009 /* TimerScrubber.swift */; };
 		A11111110000000000000008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000008 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +27,7 @@
 		A10000000000000000000005 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A10000000000000000000006 /* ScalableTimerText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalableTimerText.swift; sourceTree = "<group>"; };
 		A10000000000000000000007 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		A10000000000000000000009 /* TimerScrubber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerScrubber.swift; sourceTree = "<group>"; };
 		A10000000000000000000008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,6 +93,7 @@
 				A10000000000000000000004 /* TimerView.swift */,
 				A10000000000000000000005 /* SettingsView.swift */,
 				A10000000000000000000006 /* ScalableTimerText.swift */,
+				A10000000000000000000009 /* TimerScrubber.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 				A11111110000000000000005 /* SettingsView.swift in Sources */,
 				A11111110000000000000006 /* ScalableTimerText.swift in Sources */,
 				A11111110000000000000007 /* HapticManager.swift in Sources */,
+				A11111110000000000000009 /* TimerScrubber.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

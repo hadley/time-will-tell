@@ -10,10 +10,9 @@ struct ScalableTimerText: View {
 
     private let referenceText = "00:00"
 
-    // Control bar dimensions (must match TimerView)
-    private let controlBarButtonSize: CGFloat = 36
-    private let controlBarTrailingPadding: CGFloat = 40
-    private let controlBarExtraPadding: CGFloat = 20
+    // UI dimensions (must match TimerView)
+    private let topBarHeight: CGFloat = 44
+    private let scrubberHeight: CGFloat = 76
 
     private func timerFont(size: CGFloat) -> UIFont {
         let descriptor = UIFont.systemFont(ofSize: size, weight: .bold)
@@ -43,10 +42,9 @@ struct ScalableTimerText: View {
     }
 
     private func calculateFontSize() {
-        let controlBarWidth = controlBarButtonSize + controlBarTrailingPadding + controlBarExtraPadding
-        let safeArea = geometry.safeAreaInsets.leading + geometry.safeAreaInsets.trailing
-        let maxWidth = geometry.size.width - controlBarWidth - safeArea
-        let maxHeight = geometry.size.height - geometry.safeAreaInsets.top - geometry.safeAreaInsets.bottom
+        let horizontalSafeArea = geometry.safeAreaInsets.leading + geometry.safeAreaInsets.trailing
+        let maxWidth = geometry.size.width - horizontalSafeArea
+        let maxHeight = geometry.size.height - topBarHeight - scrubberHeight
 
         var low: CGFloat = 1
         var high: CGFloat = 500

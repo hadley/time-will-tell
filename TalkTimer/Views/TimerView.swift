@@ -23,33 +23,37 @@ struct TimerView: View {
                     .ignoresSafeArea()
                     .animation(.easeInOut(duration: 0.1), value: viewModel.isFlashWhite)
 
-                HStack {
+                VStack {
+                    HStack {
+                        Spacer()
+
+                        Button(action: viewModel.reset) {
+                            Image(systemName: "arrow.counterclockwise")
+                                .font(.system(size: 24))
+                        }
+
+                        Button(action: { showingSettings = true }) {
+                            Image(systemName: "gear")
+                                .font(.system(size: 24))
+                        }
+                    }
+                    .foregroundColor(viewModel.currentZone.textColor.opacity(0.7))
+                    .padding(.horizontal, 20)
+                    .padding(.top, 10)
+
                     Spacer()
+
                     ScalableTimerText(
                         text: viewModel.displayText,
                         textColor: viewModel.currentZone.textColor,
                         geometry: geometry
                     )
+
                     Spacer()
 
-                    VStack(spacing: 40) {
-                        Button(action: viewModel.toggle) {
-                            Image(systemName: playPauseIcon)
-                                .font(.system(size: 36))
-                        }
-
-                        Button(action: viewModel.reset) {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.system(size: 36))
-                        }
-
-                        Button(action: { showingSettings = true }) {
-                            Image(systemName: "gear")
-                                .font(.system(size: 36))
-                        }
-                    }
-                    .foregroundColor(viewModel.currentZone.textColor.opacity(0.7))
-                    .padding(.trailing, 40)
+                    TimerScrubber(viewModel: viewModel, textColor: viewModel.currentZone.textColor)
+                        .padding(.horizontal, 40)
+                        .padding(.bottom, 20)
                 }
             }
         }
@@ -70,17 +74,6 @@ struct TimerView: View {
         }
         .onChange(of: totalMinutes) { _ in
             validateThresholds()
-        }
-    }
-
-    private var playPauseIcon: String {
-        switch viewModel.status {
-        case .running:
-            return "pause.fill"
-        case .finished:
-            return "arrow.counterclockwise"
-        default:
-            return "play.fill"
         }
     }
 

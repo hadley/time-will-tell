@@ -2,7 +2,11 @@ import SwiftUI
 import Combine
 
 class TimerViewModel: ObservableObject {
-    @Published var remainingSeconds: Int = 0
+    @Published var remainingSeconds: Int = 0 {
+        didSet {
+            updateZone()
+        }
+    }
     @Published var status: TimerStatus = .idle
     @Published var currentZone: TimerZone = .black
     @Published var isFlashWhite: Bool = false
@@ -61,6 +65,14 @@ class TimerViewModel: ObservableObject {
         case .finished:
             reset()
         }
+    }
+
+    func advance(by seconds: Int) {
+        remainingSeconds = max(0, remainingSeconds - seconds)
+    }
+
+    func rewind(by seconds: Int) {
+        remainingSeconds = min(totalMinutes * 60, remainingSeconds + seconds)
     }
 
     private func startTimer() {
