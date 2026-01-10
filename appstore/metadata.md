@@ -1,10 +1,10 @@
 # App Store Metadata
 
 ## App Name
-Talk Timer
+Time Will Tell
 
 ## Subtitle (30 characters max)
-Conference countdown timer
+Talk timer for speakers
 
 ## Keywords (100 characters max, comma-separated)
 talk,timer,conference,presentation,speaker,countdown,academic,lecture,session,chair
@@ -13,7 +13,7 @@ talk,timer,conference,presentation,speaker,countdown,academic,lecture,session,ch
 
 Keep your talks on track with a timer designed for speakers and session chairs.
 
-Talk Timer displays a bold countdown visible from across the room. As time runs out, the screen changes color to give you clear visual warnings without interrupting your flow:
+Time Will Tell displays a bold countdown visible from across the room. As time runs out, the screen changes color to give you clear visual warnings without interrupting your flow:
 
 • Black: You're in the safe zone
 • Yellow: Time to start wrapping up
@@ -39,7 +39,7 @@ Features:
 Prop your phone on the lectern, set your time, and focus on what matters—your talk.
 
 ## Promotional Text (170 characters max, can be updated without review)
-The essential timer for conference speakers and session chairs. Bold, visible countdown with color-coded warnings.
+Time Will Tell—the essential timer for conference speakers and session chairs. Bold countdown with color-coded warnings.
 
 ## Support URL
 https://github.com/hadley/talktimer

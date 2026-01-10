@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Time Will Tell is a talk timer app for iOS.
+
 ## Build Commands
 
 Build for simulator:

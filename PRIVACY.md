@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Talk Timer does not collect, store, or transmit any personal data. All settings are stored locally on your device.
+Time Will Tell does not collect, store, or transmit any personal data. All settings are stored locally on your device.
 
 ## Data Collection
 

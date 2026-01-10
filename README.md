@@ -1,4 +1,4 @@
-# Talk Timer
+# Time Will Tell
 
 A simple iOS app to help speakers track their remaining time with color-coded visual warnings.
 
