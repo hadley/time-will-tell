@@ -24,12 +24,13 @@ struct TimerView: View {
                     .animation(.easeInOut(duration: 0.1), value: viewModel.isFlashWhite)
 
                 HStack {
+                    Spacer()
                     ScalableTimerText(
                         text: viewModel.displayText,
                         textColor: viewModel.currentZone.textColor,
                         geometry: geometry
                     )
-                    .frame(maxWidth: .infinity)
+                    Spacer()
 
                     VStack(spacing: 40) {
                         Button(action: viewModel.toggle) {
