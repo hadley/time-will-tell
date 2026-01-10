@@ -58,13 +58,6 @@ struct TimerScrubber: View {
     }
 
     private var playPauseIcon: String {
-        switch viewModel.status {
-        case .running:
-            return "pause.fill"
-        case .finished:
-            return "arrow.counterclockwise"
-        default:
-            return "play.fill"
-        }
+        (viewModel.status == .running || viewModel.status == .finished) ? "pause.fill" : "play.fill"
     }
 }

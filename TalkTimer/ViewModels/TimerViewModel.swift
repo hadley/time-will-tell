@@ -45,6 +45,8 @@ class TimerViewModel: ObservableObject {
     func pause() {
         status = .paused
         timerCancellable?.cancel()
+        flashCancellable?.cancel()
+        isFlashWhite = false
     }
 
     func reset() {
@@ -60,10 +62,8 @@ class TimerViewModel: ObservableObject {
         switch status {
         case .idle, .paused:
             start()
-        case .running:
+        case .running, .finished:
             pause()
-        case .finished:
-            reset()
         }
     }
 

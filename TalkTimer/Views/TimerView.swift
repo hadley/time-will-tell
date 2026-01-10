@@ -16,6 +16,13 @@ struct TimerView: View {
         return viewModel.currentZone.backgroundColor
     }
 
+    var textColor: Color {
+        if viewModel.currentZone == .flashing {
+            return viewModel.isFlashWhite ? .black : .white
+        }
+        return viewModel.currentZone.textColor
+    }
+
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -37,7 +44,7 @@ struct TimerView: View {
                                 .font(.system(size: 24))
                         }
                     }
-                    .foregroundColor(viewModel.currentZone.textColor.opacity(0.7))
+                    .foregroundColor(textColor.opacity(0.7))
                     .padding(.horizontal, 20)
                     .padding(.top, 10)
 
@@ -45,13 +52,13 @@ struct TimerView: View {
 
                     ScalableTimerText(
                         text: viewModel.displayText,
-                        textColor: viewModel.currentZone.textColor,
+                        textColor: textColor,
                         geometry: geometry
                     )
 
                     Spacer()
 
-                    TimerScrubber(viewModel: viewModel, textColor: viewModel.currentZone.textColor)
+                    TimerScrubber(viewModel: viewModel, textColor: textColor)
                         .padding(.horizontal, 40)
                         .padding(.bottom, 20)
                 }
