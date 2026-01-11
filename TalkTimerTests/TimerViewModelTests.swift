@@ -71,31 +71,4 @@ struct TimerViewModelTests {
         vm.reset()
         #expect(vm.remainingSeconds == 10 * 60)
     }
-
-    // MARK: - Advance and Rewind
-
-    @Test func advanceAndRewind() {
-        let vm = TimerViewModel()
-        vm.configure(totalMinutes: 10, yellowThreshold: 3, redThreshold: 1)
-        vm.remainingSeconds = 100
-
-        vm.advance(by: 30)
-        #expect(vm.remainingSeconds == 70)
-
-        vm.rewind(by: 50)
-        #expect(vm.remainingSeconds == 120)
-    }
-
-    @Test func advanceAndRewindClampAtBounds() {
-        let vm = TimerViewModel()
-        vm.configure(totalMinutes: 10, yellowThreshold: 3, redThreshold: 1)
-
-        vm.remainingSeconds = 10
-        vm.advance(by: 100)
-        #expect(vm.remainingSeconds == 0)
-
-        vm.remainingSeconds = 590
-        vm.rewind(by: 100)
-        #expect(vm.remainingSeconds == 10 * 60)
-    }
 }

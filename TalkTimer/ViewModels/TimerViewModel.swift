@@ -68,14 +68,6 @@ class TimerViewModel: ObservableObject {
         }
     }
 
-    func advance(by seconds: Int) {
-        remainingSeconds = max(0, remainingSeconds - seconds)
-    }
-
-    func rewind(by seconds: Int) {
-        remainingSeconds = min(totalMinutes * 60, remainingSeconds + seconds)
-    }
-
     private func startTimer() {
         timerCancellable = Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
