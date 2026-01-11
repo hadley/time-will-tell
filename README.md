@@ -11,6 +11,7 @@ A simple iOS app to help speakers track their remaining time with color-coded vi
   - **Red**: Danger - wrap it up!
   - **Flashing**: Time's up!
 - Haptic vibration alerts when entering warning zones
+- Optional gong sound when time is up
 - Configurable talk duration and warning thresholds
 - Screen stays awake during countdown
 
@@ -19,3 +20,7 @@ A simple iOS app to help speakers track their remaining time with color-coded vi
 ![Black - Safe zone](appstore/screenshot-black.png)
 ![Yellow - Warning](appstore/screenshot-orange.png)
 ![Red - Danger](appstore/screenshot-red.png)
+
+## Credits
+
+Gong sound by [juskiddink](https://freesound.org/people/juskiddink/) from [Freesound](https://freesound.org/people/juskiddink/sounds/86773/), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

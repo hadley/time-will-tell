@@ -4,6 +4,7 @@ struct SettingsView: View {
     @Binding var totalMinutes: Int
     @Binding var yellowThreshold: Int
     @Binding var redThreshold: Int
+    @Binding var playGongOnFinish: Bool
     let onSave: () -> Void
 
     @Environment(\.dismiss) private var dismiss
@@ -24,6 +25,10 @@ struct SettingsView: View {
                         }
 
                     Stepper("Red at: \(redThreshold) min remaining", value: $redThreshold, in: 0 ... yellowThreshold)
+                }
+
+                Section(header: Text("Sound")) {
+                    Toggle("Play gong", isOn: $playGongOnFinish)
                 }
 
                 Section {

@@ -20,6 +20,8 @@
 		A1111111000000000000000B /* TimerStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000B /* TimerStateTests.swift */; };
 		A1111111000000000000000D /* TimerViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000D /* TimerViewSnapshotTests.swift */; };
 		A1111111000000000000000E /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A19999990000000000000001 /* SnapshotTesting */; };
+		A1111111000000000000000F /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000E /* SoundManager.swift */; };
+		A11111110000000000000010 /* gong.wav in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000F /* gong.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		A1000000000000000000000B /* TimerStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerStateTests.swift; sourceTree = "<group>"; };
 		A1000000000000000000000C /* TalkTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TalkTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1000000000000000000000D /* TimerViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewSnapshotTests.swift; sourceTree = "<group>"; };
+		A1000000000000000000000E /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		A1000000000000000000000F /* gong.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gong.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +89,7 @@
 				A13333330000000000000004 /* ViewModels */,
 				A13333330000000000000005 /* Views */,
 				A13333330000000000000006 /* Utilities */,
+				A13333330000000000000008 /* Resources */,
 				A10000000000000000000008 /* Assets.xcassets */,
 			);
 			path = TalkTimer;
@@ -130,8 +135,17 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000007 /* HapticManager.swift */,
+				A1000000000000000000000E /* SoundManager.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		A13333330000000000000008 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A1000000000000000000000F /* gong.wav */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		A13333330000000000000007 /* TalkTimerTests */ = {
@@ -231,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A11111110000000000000008 /* Assets.xcassets in Resources */,
+				A11111110000000000000010 /* gong.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +264,7 @@
 				A11111110000000000000006 /* ScalableTimerText.swift in Sources */,
 				A11111110000000000000007 /* HapticManager.swift in Sources */,
 				A11111110000000000000009 /* TimerScrubber.swift in Sources */,
+				A1111111000000000000000F /* SoundManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

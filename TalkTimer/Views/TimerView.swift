@@ -6,8 +6,11 @@ struct TimerView: View {
     @AppStorage("totalMinutes") private var totalMinutes: Int = 20
     @AppStorage("yellowThreshold") private var yellowThreshold: Int = 5
     @AppStorage("redThreshold") private var redThreshold: Int = 2
+    @AppStorage("playGongOnFinish") private var playGongOnFinish: Bool = false
 
     @State private var showingSettings = false
+
+    private let soundManager = SoundManager()
 
     var backgroundColor: Color {
         if viewModel.currentZone == .flashing {
@@ -64,6 +67,7 @@ struct TimerView: View {
                 totalMinutes: $totalMinutes,
                 yellowThreshold: $yellowThreshold,
                 redThreshold: $redThreshold,
+                playGongOnFinish: $playGongOnFinish,
                 onSave: applySettings
             )
         }
@@ -76,6 +80,11 @@ struct TimerView: View {
         }
         .onChange(of: totalMinutes) { _ in
             validateThresholds()
+        }
+        .onChange(of: viewModel.status) { newStatus in
+            if newStatus == .finished, playGongOnFinish {
+                soundManager.playGong()
+            }
         }
     }
 
