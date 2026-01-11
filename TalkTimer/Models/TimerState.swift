@@ -9,26 +9,26 @@ enum TimerZone: Equatable {
     var backgroundColor: Color {
         switch self {
         case .black:
-            return .black
+            .black
         case .yellow:
-            return .yellow
+            .yellow
         case .red:
-            return .red
+            .red
         case .flashing:
-            return .red
+            .red
         }
     }
 
     var textColor: Color {
         switch self {
         case .black:
-            return .white
+            .white
         case .yellow:
-            return .black
+            .black
         case .red:
-            return .white
+            .white
         case .flashing:
-            return .white
+            .white
         }
     }
 }

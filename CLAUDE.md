@@ -36,3 +36,10 @@ The timer transitions through color-coded zones based on remaining time:
 **Display Logic:**
 - Always shows MM:SS format
 - `ScalableTimerText` auto-scales text to fill available screen space
+
+## Code Style
+
+After adding or modifying Swift code, run the formatter:
+```bash
+swiftformat .
+```

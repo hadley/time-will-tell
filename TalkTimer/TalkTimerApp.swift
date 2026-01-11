@@ -1,8 +1,8 @@
 import SwiftUI
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return .landscape
+    func application(_: UIApplication, supportedInterfaceOrientationsFor _: UIWindow?) -> UIInterfaceOrientationMask {
+        .landscape
     }
 }
 

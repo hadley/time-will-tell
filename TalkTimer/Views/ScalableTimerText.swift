@@ -15,8 +15,8 @@ struct ScalableTimerText: View {
             .addingAttributes([
                 .featureSettings: [[
                     UIFontDescriptor.FeatureKey.type: kNumberSpacingType,
-                    UIFontDescriptor.FeatureKey.selector: kMonospacedNumbersSelector
-                ]]
+                    UIFontDescriptor.FeatureKey.selector: kMonospacedNumbersSelector,
+                ]],
             ])
         return UIFont(descriptor: descriptor, size: size)
     }
@@ -47,7 +47,7 @@ struct ScalableTimerText: View {
         let maxWidth = availableSize.width
         let maxHeight = availableSize.height
 
-        guard maxWidth > 0 && maxHeight > 0 else { return }
+        guard maxWidth > 0, maxHeight > 0 else { return }
 
         var low: CGFloat = 1
         var high: CGFloat = 500
@@ -59,7 +59,7 @@ struct ScalableTimerText: View {
             let attributes: [NSAttributedString.Key: Any] = [.font: font]
             let size = (referenceText as NSString).size(withAttributes: attributes)
 
-            if size.width <= maxWidth && size.height <= maxHeight {
+            if size.width <= maxWidth, size.height <= maxHeight {
                 low = mid
             } else {
                 high = mid

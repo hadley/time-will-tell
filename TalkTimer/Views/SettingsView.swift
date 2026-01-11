@@ -12,18 +12,18 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 Section(header: Text("Talk Duration")) {
-                    Stepper("Total Time: \(totalMinutes) min", value: $totalMinutes, in: 1...120)
+                    Stepper("Total Time: \(totalMinutes) min", value: $totalMinutes, in: 1 ... 120)
                 }
 
                 Section(header: Text("Warning Thresholds")) {
-                    Stepper("Yellow at: \(yellowThreshold) min remaining", value: $yellowThreshold, in: 1...totalMinutes)
+                    Stepper("Yellow at: \(yellowThreshold) min remaining", value: $yellowThreshold, in: 1 ... totalMinutes)
                         .onChange(of: yellowThreshold) { newValue in
                             if redThreshold > newValue {
                                 redThreshold = newValue
                             }
                         }
 
-                    Stepper("Red at: \(redThreshold) min remaining", value: $redThreshold, in: 0...yellowThreshold)
+                    Stepper("Red at: \(redThreshold) min remaining", value: $redThreshold, in: 0 ... yellowThreshold)
                 }
 
                 Section {

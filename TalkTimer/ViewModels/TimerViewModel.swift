@@ -1,5 +1,5 @@
-import SwiftUI
 import Combine
+import SwiftUI
 
 class TimerViewModel: ObservableObject {
     @Published var remainingSeconds: Int = 0 {
@@ -7,6 +7,7 @@ class TimerViewModel: ObservableObject {
             updateZone()
         }
     }
+
     @Published var status: TimerStatus = .idle
     @Published var currentZone: TimerZone = .black
     @Published var isFlashWhite: Bool = false
@@ -32,8 +33,8 @@ class TimerViewModel: ObservableObject {
 
     func configure(totalMinutes: Int, yellowThreshold: Int, redThreshold: Int) {
         self.totalMinutes = totalMinutes
-        self.yellowThresholdMinutes = yellowThreshold
-        self.redThresholdMinutes = redThreshold
+        yellowThresholdMinutes = yellowThreshold
+        redThresholdMinutes = redThreshold
         reset()
     }
 
@@ -110,7 +111,7 @@ class TimerViewModel: ObservableObject {
             currentZone = .black
         }
 
-        if previousZone != currentZone && currentZone != .black {
+        if previousZone != currentZone, currentZone != .black {
             hapticManager.zoneTransition()
         }
     }

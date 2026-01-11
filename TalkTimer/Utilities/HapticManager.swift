@@ -1,5 +1,5 @@
-import UIKit
 import CoreHaptics
+import UIKit
 
 class HapticManager {
     private var engine: CHHapticEngine?
@@ -21,7 +21,7 @@ class HapticManager {
     }
 
     func zoneTransition() {
-        guard let engine = engine else { return }
+        guard let engine else { return }
 
         // Create a continuous buzz pattern
         let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0)
