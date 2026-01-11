@@ -23,7 +23,7 @@ class TimerViewModel: ObservableObject {
     var displayText: String {
         let minutes = remainingSeconds / 60
         let seconds = remainingSeconds % 60
-        return String(format: "%02d:%02d", minutes, seconds)
+        return String(format: "%2d:%02d", minutes, seconds)
     }
 
     init() {

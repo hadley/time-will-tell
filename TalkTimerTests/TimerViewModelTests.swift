@@ -5,8 +5,9 @@ struct TimerViewModelTests {
     // MARK: - Display Text Formatting
 
     @Test(arguments: [
-        (0, "00:00"),
-        (305, "05:05"),
+        (0, " 0:00"),
+        (305, " 5:05"),
+        (600, "10:00"),
         (5999, "99:59"),
     ])
     func displayText(seconds: Int, expected: String) {

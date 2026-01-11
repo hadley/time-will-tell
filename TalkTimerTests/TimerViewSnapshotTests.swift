@@ -36,7 +36,7 @@ struct TimerViewSnapshotTests {
     }
 
     @Test func narrowTimerDisplay() {
-        let view = TimerSnapshotView(displayText: "01:11")
+        let view = TimerSnapshotView(displayText: " 1:11")
 
         // iPhone landscape
         assertSnapshot(
