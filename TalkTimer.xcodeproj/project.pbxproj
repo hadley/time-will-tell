@@ -18,6 +18,8 @@
 		A11111110000000000000009 /* TimerScrubber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000009 /* TimerScrubber.swift */; };
 		A1111111000000000000000A /* TimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000A /* TimerViewModelTests.swift */; };
 		A1111111000000000000000B /* TimerStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000B /* TimerStateTests.swift */; };
+		A1111111000000000000000D /* TimerViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000D /* TimerViewSnapshotTests.swift */; };
+		A1111111000000000000000E /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A19999990000000000000001 /* SnapshotTesting */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,7 @@
 		A1000000000000000000000A /* TimerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModelTests.swift; sourceTree = "<group>"; };
 		A1000000000000000000000B /* TimerStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerStateTests.swift; sourceTree = "<group>"; };
 		A1000000000000000000000C /* TalkTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TalkTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1000000000000000000000D /* TimerViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewSnapshotTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1111111000000000000000E /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +139,7 @@
 			children = (
 				A1000000000000000000000A /* TimerViewModelTests.swift */,
 				A1000000000000000000000B /* TimerStateTests.swift */,
+				A1000000000000000000000D /* TimerViewSnapshotTests.swift */,
 			);
 			path = TalkTimerTests;
 			sourceTree = "<group>";
@@ -172,6 +177,9 @@
 				A18888880000000000000002 /* PBXTargetDependency */,
 			);
 			name = TalkTimerTests;
+			packageProductDependencies = (
+				A19999990000000000000001 /* SnapshotTesting */,
+			);
 			productName = TalkTimerTests;
 			productReference = A1000000000000000000000C /* TalkTimerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -204,6 +212,9 @@
 				Base,
 			);
 			mainGroup = A13333330000000000000000;
+			packageReferences = (
+				A1AAAAAAA0000000000000001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			productRefGroup = A13333330000000000000002 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -247,6 +258,7 @@
 			files = (
 				A1111111000000000000000A /* TimerViewModelTests.swift in Sources */,
 				A1111111000000000000000B /* TimerStateTests.swift in Sources */,
+				A1111111000000000000000D /* TimerViewSnapshotTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +519,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A1AAAAAAA0000000000000001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.17.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A19999990000000000000001 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1AAAAAAA0000000000000001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A16666660000000000000001 /* Project object */;
 }
