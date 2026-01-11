@@ -24,44 +24,39 @@ struct TimerView: View {
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                backgroundColor
-                    .ignoresSafeArea()
-                    .animation(.easeInOut(duration: 0.1), value: viewModel.isFlashWhite)
+        ZStack {
+            backgroundColor
+                .ignoresSafeArea()
+                .animation(.easeInOut(duration: 0.1), value: viewModel.isFlashWhite)
 
-                VStack {
-                    HStack {
-                        Spacer()
+            VStack {
+                ScalableTimerText(
+                    text: viewModel.displayText,
+                    textColor: textColor
+                )
 
-                        Button(action: viewModel.reset) {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.system(size: 24))
-                        }
+                TimerScrubber(viewModel: viewModel, textColor: textColor)
+                    .padding(.horizontal, 40)
+                    .padding(.bottom, 20)
+            }
 
-                        Button(action: { showingSettings = true }) {
-                            Image(systemName: "gear")
-                                .font(.system(size: 24))
-                        }
+            // Floating buttons in top-right corner
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: viewModel.reset) {
+                        Image(systemName: "arrow.counterclockwise")
+                            .font(.system(size: 24))
                     }
-                    .foregroundColor(textColor.opacity(0.7))
-                    .padding(.horizontal, 20)
-                    .padding(.top, 10)
-
-                    Spacer()
-
-                    ScalableTimerText(
-                        text: viewModel.displayText,
-                        textColor: textColor,
-                        geometry: geometry
-                    )
-
-                    Spacer()
-
-                    TimerScrubber(viewModel: viewModel, textColor: textColor)
-                        .padding(.horizontal, 40)
-                        .padding(.bottom, 20)
+                    Button(action: { showingSettings = true }) {
+                        Image(systemName: "gear")
+                            .font(.system(size: 24))
+                    }
                 }
+                .foregroundColor(textColor.opacity(0.7))
+                .padding(.horizontal, 20)
+                .padding(.top, 10)
+                Spacer()
             }
         }
         .sheet(isPresented: $showingSettings) {

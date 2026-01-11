@@ -3,16 +3,11 @@ import SwiftUI
 struct ScalableTimerText: View {
     let text: String
     let textColor: Color
-    let geometry: GeometryProxy
 
     @State private var fontSize: CGFloat = 500
-    @State private var hasCalculatedSize = false
+    @State private var availableSize: CGSize = .zero
 
     private let referenceText = "00:00"
-
-    // UI dimensions (must match TimerView)
-    private let topBarHeight: CGFloat = 44
-    private let scrubberHeight: CGFloat = 76
 
     private func timerFont(size: CGFloat) -> UIFont {
         let descriptor = UIFont.systemFont(ofSize: size, weight: .bold)
@@ -27,24 +22,32 @@ struct ScalableTimerText: View {
     }
 
     var body: some View {
-        Text(text)
-            .font(Font(timerFont(size: fontSize)))
-            .lineLimit(1)
-            .foregroundColor(textColor)
-            .onAppear {
-                if !hasCalculatedSize {
-                    calculateFontSize()
+        GeometryReader { geometry in
+            Text(text)
+                .font(Font(timerFont(size: fontSize)))
+                .lineLimit(1)
+                .foregroundColor(textColor)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .onAppear {
+                    updateFontSize(for: geometry.size)
                 }
-            }
-            .onChange(of: geometry.size) { _ in
-                calculateFontSize()
-            }
+                .onChange(of: geometry.size) { newSize in
+                    updateFontSize(for: newSize)
+                }
+        }
+    }
+
+    private func updateFontSize(for size: CGSize) {
+        guard size != availableSize else { return }
+        availableSize = size
+        calculateFontSize()
     }
 
     private func calculateFontSize() {
-        let horizontalSafeArea = geometry.safeAreaInsets.leading + geometry.safeAreaInsets.trailing
-        let maxWidth = geometry.size.width - horizontalSafeArea
-        let maxHeight = geometry.size.height - topBarHeight - scrubberHeight
+        let maxWidth = availableSize.width
+        let maxHeight = availableSize.height
+
+        guard maxWidth > 0 && maxHeight > 0 else { return }
 
         var low: CGFloat = 1
         var high: CGFloat = 500
@@ -63,8 +66,6 @@ struct ScalableTimerText: View {
             }
         }
 
-        // Apply safety margin to account for rendering differences
         fontSize = low
-        hasCalculatedSize = true
     }
 }
