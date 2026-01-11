@@ -1,6 +1,20 @@
 @testable import TalkTimer
 import Testing
 
+// MARK: - Pure Zone Function
+
+@Test(arguments: [
+    (301, 300, 120, TimerZone.black), // 1 sec above yellow
+    (300, 300, 120, TimerZone.yellow), // exactly at yellow
+    (121, 300, 120, TimerZone.yellow), // 1 sec above red
+    (120, 300, 120, TimerZone.red), // exactly at red
+    (1, 300, 120, TimerZone.red), // 1 sec left
+    (0, 300, 120, TimerZone.flashing), // time's up
+])
+func zoneForTimeTests(seconds: Int, yellow: Int, red: Int, expected: TimerZone) {
+    #expect(zoneForTime(seconds: seconds, yellowThreshold: yellow, redThreshold: red) == expected)
+}
+
 struct TimerViewModelTests {
     // MARK: - Display Text Formatting
 

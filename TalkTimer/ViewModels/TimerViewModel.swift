@@ -1,6 +1,18 @@
 import Combine
 import SwiftUI
 
+func zoneForTime(seconds: Int, yellowThreshold: Int, redThreshold: Int) -> TimerZone {
+    if seconds <= 0 {
+        .flashing
+    } else if seconds <= redThreshold {
+        .red
+    } else if seconds <= yellowThreshold {
+        .yellow
+    } else {
+        .black
+    }
+}
+
 class TimerViewModel: ObservableObject {
     @Published var remainingSeconds: Int = 0 {
         didSet {
@@ -13,8 +25,8 @@ class TimerViewModel: ObservableObject {
     @Published var isFlashWhite: Bool = false
 
     var totalMinutes: Int = 20
-    var yellowThresholdMinutes: Int = 5
-    var redThresholdMinutes: Int = 2
+    var yellowThresholdSeconds: Int = 5 * 60
+    var redThresholdSeconds: Int = 2 * 60
 
     private var timerCancellable: AnyCancellable?
     private var flashCancellable: AnyCancellable?
@@ -33,8 +45,8 @@ class TimerViewModel: ObservableObject {
 
     func configure(totalMinutes: Int, yellowThreshold: Int, redThreshold: Int) {
         self.totalMinutes = totalMinutes
-        yellowThresholdMinutes = yellowThreshold
-        redThresholdMinutes = redThreshold
+        yellowThresholdSeconds = yellowThreshold * 60
+        redThresholdSeconds = redThreshold * 60
         reset()
     }
 
@@ -90,18 +102,11 @@ class TimerViewModel: ObservableObject {
 
     private func updateZone() {
         let previousZone = currentZone
-        let minutes = remainingSeconds / 60
-        let seconds = remainingSeconds % 60
-
-        if remainingSeconds <= 0 {
-            currentZone = .flashing
-        } else if minutes < redThresholdMinutes || (minutes == redThresholdMinutes && seconds == 0) {
-            currentZone = .red
-        } else if minutes < yellowThresholdMinutes || (minutes == yellowThresholdMinutes && seconds == 0) {
-            currentZone = .yellow
-        } else {
-            currentZone = .black
-        }
+        currentZone = zoneForTime(
+            seconds: remainingSeconds,
+            yellowThreshold: yellowThresholdSeconds,
+            redThreshold: redThresholdSeconds
+        )
 
         if previousZone != currentZone, currentZone != .black {
             hapticManager.zoneTransition()
