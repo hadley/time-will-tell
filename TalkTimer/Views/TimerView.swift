@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TimerView: View {
     @StateObject private var viewModel = TimerViewModel()
+    @Environment(\.scenePhase) private var scenePhase
 
     @AppStorage("totalSeconds") private var totalSeconds: Int = 20 * 60
     @AppStorage("yellowThresholdSeconds") private var yellowThresholdSeconds: Int = 5 * 60
@@ -84,6 +85,11 @@ struct TimerView: View {
         .onChange(of: viewModel.status) { newStatus in
             if newStatus == .finished, playGongOnFinish {
                 soundManager.playGong()
+            }
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                viewModel.handleReturnToForeground()
             }
         }
     }

@@ -1,3 +1,4 @@
+import Foundation
 @testable import TalkTimer
 import Testing
 
@@ -85,5 +86,75 @@ struct TimerViewModelTests {
         vm.remainingSeconds = 100
         vm.reset()
         #expect(vm.remainingSeconds == 10 * 60)
+    }
+
+    // MARK: - Background Time Tracking
+
+    @Test func handleReturnToForegroundUpdatesRemainingTime() {
+        let vm = TimerViewModel()
+        vm.configure(totalSeconds: 10 * 60, yellowThresholdSeconds: 3 * 60, redThresholdSeconds: 1 * 60)
+        vm.start()
+
+        // Simulate 5 minutes passing while in background
+        let fiveMinutesLater = Date().addingTimeInterval(5 * 60)
+        vm.handleReturnToForeground(now: fiveMinutesLater)
+
+        #expect(vm.remainingSeconds == 5 * 60)
+        #expect(vm.status == .running)
+    }
+
+    @Test func handleReturnToForegroundFinishesWhenTimeExpired() {
+        let vm = TimerViewModel()
+        vm.configure(totalSeconds: 5 * 60, yellowThresholdSeconds: 2 * 60, redThresholdSeconds: 1 * 60)
+        vm.start()
+
+        // Simulate 10 minutes passing (more than total time)
+        let tenMinutesLater = Date().addingTimeInterval(10 * 60)
+        vm.handleReturnToForeground(now: tenMinutesLater)
+
+        #expect(vm.remainingSeconds == 0)
+        #expect(vm.status == .finished)
+        #expect(vm.currentZone == .flashing)
+    }
+
+    @Test func handleReturnToForegroundDoesNothingWhenPaused() {
+        let vm = TimerViewModel()
+        vm.configure(totalSeconds: 10 * 60, yellowThresholdSeconds: 3 * 60, redThresholdSeconds: 1 * 60)
+        vm.start()
+        vm.pause()
+
+        let originalRemaining = vm.remainingSeconds
+        let fiveMinutesLater = Date().addingTimeInterval(5 * 60)
+        vm.handleReturnToForeground(now: fiveMinutesLater)
+
+        #expect(vm.remainingSeconds == originalRemaining)
+        #expect(vm.status == .paused)
+    }
+
+    @Test func handleReturnToForegroundDoesNothingWhenIdle() {
+        let vm = TimerViewModel()
+        vm.configure(totalSeconds: 10 * 60, yellowThresholdSeconds: 3 * 60, redThresholdSeconds: 1 * 60)
+
+        let originalRemaining = vm.remainingSeconds
+        let fiveMinutesLater = Date().addingTimeInterval(5 * 60)
+        vm.handleReturnToForeground(now: fiveMinutesLater)
+
+        #expect(vm.remainingSeconds == originalRemaining)
+        #expect(vm.status == .idle)
+    }
+
+    @Test func handleReturnToForegroundUpdatesZone() {
+        let vm = TimerViewModel()
+        vm.configure(totalSeconds: 10 * 60, yellowThresholdSeconds: 3 * 60, redThresholdSeconds: 1 * 60)
+        vm.start()
+
+        #expect(vm.currentZone == .black)
+
+        // Simulate 8 minutes passing - should now be in yellow zone (2 min remaining)
+        let eightMinutesLater = Date().addingTimeInterval(8 * 60)
+        vm.handleReturnToForeground(now: eightMinutesLater)
+
+        #expect(vm.remainingSeconds == 2 * 60)
+        #expect(vm.currentZone == .yellow)
     }
 }

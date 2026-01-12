@@ -32,6 +32,10 @@ class TimerViewModel: ObservableObject {
     private var flashCancellable: AnyCancellable?
     private let hapticManager = HapticManager()
 
+    // For background time tracking
+    private(set) var timerStartDate: Date?
+    private(set) var remainingSecondsAtStart: Int = 0
+
     var displayText: String {
         let minutes = remainingSeconds / 60
         let seconds = remainingSeconds % 60
@@ -52,6 +56,8 @@ class TimerViewModel: ObservableObject {
 
     func start() {
         status = .running
+        timerStartDate = Date()
+        remainingSecondsAtStart = remainingSeconds
         startTimer()
     }
 
@@ -60,6 +66,7 @@ class TimerViewModel: ObservableObject {
         timerCancellable?.cancel()
         flashCancellable?.cancel()
         isFlashWhite = false
+        timerStartDate = nil
     }
 
     func reset() {
@@ -67,8 +74,25 @@ class TimerViewModel: ObservableObject {
         timerCancellable?.cancel()
         flashCancellable?.cancel()
         isFlashWhite = false
+        timerStartDate = nil
         remainingSeconds = totalSeconds
         updateZone()
+    }
+
+    func handleReturnToForeground(now: Date = Date()) {
+        guard status == .running, let startDate = timerStartDate else { return }
+
+        let elapsedSeconds = Int(now.timeIntervalSince(startDate))
+        let newRemaining = max(0, remainingSecondsAtStart - elapsedSeconds)
+
+        remainingSeconds = newRemaining
+
+        if remainingSeconds <= 0 {
+            status = .finished
+            timerCancellable?.cancel()
+            startFlashing()
+            hapticManager.zoneTransition()
+        }
     }
 
     func toggle() {
