@@ -9,6 +9,15 @@ struct SettingsView: View {
 
     @Environment(\.dismiss) private var dismiss
 
+    // Preset timers: (total, yellow, red) in minutes
+    private let presets: [(total: Double, yellow: Double, red: Double, label: String)] = [
+        (60, 10, 3, "60"),
+        (45, 10, 3, "45"),
+        (20, 3, 1, "20"),
+        (15, 3, 1, "15"),
+        (5, 1, 0.5, "5"),
+    ]
+
     private var totalMinutes: Binding<Int> {
         Binding(
             get: { totalSeconds / 60 },
@@ -16,10 +25,44 @@ struct SettingsView: View {
         )
     }
 
+    private func isPresetSelected(_ preset: (total: Double, yellow: Double, red: Double, label: String)) -> Bool {
+        totalSeconds == Int(preset.total * 60) &&
+            yellowThresholdSeconds == Int(preset.yellow * 60) &&
+            redThresholdSeconds == Int(preset.red * 60)
+    }
+
     var body: some View {
         NavigationView {
             Form {
                 Section {
+                    HStack(spacing: 12) {
+                        ForEach(presets, id: \.total) { preset in
+                            Button {
+                                totalSeconds = Int(preset.total * 60)
+                                yellowThresholdSeconds = Int(preset.yellow * 60)
+                                redThresholdSeconds = Int(preset.red * 60)
+                            } label: {
+                                Text(preset.label)
+                                    .font(.headline)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 8)
+                                    .background(
+                                        isPresetSelected(preset)
+                                            ? Color.accentColor
+                                            : Color.secondary.opacity(0.2)
+                                    )
+                                    .foregroundColor(
+                                        isPresetSelected(preset)
+                                            ? .white
+                                            : .primary
+                                    )
+                                    .cornerRadius(8)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(.vertical, 4)
+
                     Stepper(value: totalMinutes, in: 1 ... 120, step: 1) {
                         HStack {
                             Text("Total time")
