@@ -59,10 +59,17 @@ final class TimerViewModel: ObservableObject {
     }
 
     func configure(totalSeconds: Int, yellowThresholdSeconds: Int, redThresholdSeconds: Int) {
+        let totalChanged = self.totalSeconds != totalSeconds
         self.totalSeconds = totalSeconds
         self.yellowThresholdSeconds = yellowThresholdSeconds
         self.redThresholdSeconds = redThresholdSeconds
-        reset()
+
+        // Only reset if idle or if total time changed
+        if status == .idle || totalChanged {
+            reset()
+        } else {
+            updateZone()
+        }
     }
 
     func start() {
