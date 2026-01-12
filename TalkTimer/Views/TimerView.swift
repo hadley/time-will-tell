@@ -74,6 +74,7 @@ struct TimerView: View {
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
+            NotificationManager.shared.requestAuthorization()
             applySettings()
         }
         .onDisappear {
@@ -88,8 +89,13 @@ struct TimerView: View {
             }
         }
         .onChange(of: scenePhase) { newPhase in
-            if newPhase == .active {
+            switch newPhase {
+            case .active:
                 viewModel.handleReturnToForeground()
+            case .background:
+                viewModel.handleEnterBackground()
+            default:
+                break
             }
         }
     }

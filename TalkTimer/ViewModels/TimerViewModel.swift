@@ -80,6 +80,9 @@ class TimerViewModel: ObservableObject {
     }
 
     func handleReturnToForeground(now: Date = Date()) {
+        // Cancel background notifications since we're back in foreground
+        NotificationManager.shared.cancelAllNotifications()
+
         guard status == .running, let startDate = timerStartDate else { return }
 
         let elapsedSeconds = Int(now.timeIntervalSince(startDate))
@@ -93,6 +96,16 @@ class TimerViewModel: ObservableObject {
             startFlashing()
             hapticManager.zoneTransition()
         }
+    }
+
+    func handleEnterBackground() {
+        guard status == .running else { return }
+
+        NotificationManager.shared.scheduleTimerNotifications(
+            remainingSeconds: remainingSeconds,
+            yellowThreshold: yellowThresholdSeconds,
+            redThreshold: redThresholdSeconds
+        )
     }
 
     func toggle() {
