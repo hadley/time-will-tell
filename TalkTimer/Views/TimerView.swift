@@ -3,9 +3,9 @@ import SwiftUI
 struct TimerView: View {
     @StateObject private var viewModel = TimerViewModel()
 
-    @AppStorage("totalMinutes") private var totalMinutes: Int = 20
-    @AppStorage("yellowThreshold") private var yellowThreshold: Int = 5
-    @AppStorage("redThreshold") private var redThreshold: Int = 2
+    @AppStorage("totalSeconds") private var totalSeconds: Int = 20 * 60
+    @AppStorage("yellowThresholdSeconds") private var yellowThresholdSeconds: Int = 5 * 60
+    @AppStorage("redThresholdSeconds") private var redThresholdSeconds: Int = 2 * 60
     @AppStorage("playGongOnFinish") private var playGongOnFinish: Bool = false
 
     @State private var showingSettings = false
@@ -64,9 +64,9 @@ struct TimerView: View {
         }
         .sheet(isPresented: $showingSettings) {
             SettingsView(
-                totalMinutes: $totalMinutes,
-                yellowThreshold: $yellowThreshold,
-                redThreshold: $redThreshold,
+                totalSeconds: $totalSeconds,
+                yellowThresholdSeconds: $yellowThresholdSeconds,
+                redThresholdSeconds: $redThresholdSeconds,
                 playGongOnFinish: $playGongOnFinish,
                 onSave: applySettings
             )
@@ -78,7 +78,7 @@ struct TimerView: View {
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
         }
-        .onChange(of: totalMinutes) { _ in
+        .onChange(of: totalSeconds) { _ in
             validateThresholds()
         }
         .onChange(of: viewModel.status) { newStatus in
@@ -91,18 +91,18 @@ struct TimerView: View {
     private func applySettings() {
         validateThresholds()
         viewModel.configure(
-            totalMinutes: totalMinutes,
-            yellowThreshold: yellowThreshold,
-            redThreshold: redThreshold
+            totalSeconds: totalSeconds,
+            yellowThresholdSeconds: yellowThresholdSeconds,
+            redThresholdSeconds: redThresholdSeconds
         )
     }
 
     private func validateThresholds() {
-        if yellowThreshold > totalMinutes {
-            yellowThreshold = totalMinutes
+        if yellowThresholdSeconds > totalSeconds {
+            yellowThresholdSeconds = totalSeconds
         }
-        if redThreshold > yellowThreshold {
-            redThreshold = yellowThreshold
+        if redThresholdSeconds > yellowThresholdSeconds {
+            redThresholdSeconds = yellowThresholdSeconds
         }
     }
 }

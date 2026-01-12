@@ -7,8 +7,8 @@ struct TimerScrubber: View {
     @State private var isDragging = false
 
     private var progress: Double {
-        guard viewModel.totalMinutes > 0 else { return 0 }
-        let total = Double(viewModel.totalMinutes * 60)
+        guard viewModel.totalSeconds > 0 else { return 0 }
+        let total = Double(viewModel.totalSeconds)
         let remaining = Double(viewModel.remainingSeconds)
         return 1 - (remaining / total)
     }
@@ -42,7 +42,7 @@ struct TimerScrubber: View {
                                 .onChanged { value in
                                     isDragging = true
                                     let percent = max(0, min(1, value.location.x / geometry.size.width))
-                                    let totalSeconds = viewModel.totalMinutes * 60
+                                    let totalSeconds = viewModel.totalSeconds
                                     viewModel.remainingSeconds = Int(Double(totalSeconds) * (1 - percent))
                                 }
                                 .onEnded { _ in

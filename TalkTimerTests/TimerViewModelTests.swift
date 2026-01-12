@@ -42,7 +42,7 @@ struct TimerViewModelTests {
     ])
     func zoneTransitions(seconds: Int, expectedZone: TimerZone) {
         let vm = TimerViewModel()
-        vm.configure(totalMinutes: 20, yellowThreshold: 5, redThreshold: 2)
+        vm.configure(totalSeconds: 20 * 60, yellowThresholdSeconds: 5 * 60, redThresholdSeconds: 2 * 60)
         vm.remainingSeconds = seconds
         #expect(vm.currentZone == expectedZone)
     }
@@ -81,7 +81,7 @@ struct TimerViewModelTests {
 
     @Test func resetRestoresFullTime() {
         let vm = TimerViewModel()
-        vm.configure(totalMinutes: 10, yellowThreshold: 3, redThreshold: 1)
+        vm.configure(totalSeconds: 10 * 60, yellowThresholdSeconds: 3 * 60, redThresholdSeconds: 1 * 60)
         vm.remainingSeconds = 100
         vm.reset()
         #expect(vm.remainingSeconds == 10 * 60)

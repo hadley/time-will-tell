@@ -24,7 +24,7 @@ class TimerViewModel: ObservableObject {
     @Published var currentZone: TimerZone = .black
     @Published var isFlashWhite: Bool = false
 
-    var totalMinutes: Int = 20
+    var totalSeconds: Int = 20 * 60
     var yellowThresholdSeconds: Int = 5 * 60
     var redThresholdSeconds: Int = 2 * 60
 
@@ -39,14 +39,14 @@ class TimerViewModel: ObservableObject {
     }
 
     init() {
-        remainingSeconds = totalMinutes * 60
+        remainingSeconds = totalSeconds
         updateZone()
     }
 
-    func configure(totalMinutes: Int, yellowThreshold: Int, redThreshold: Int) {
-        self.totalMinutes = totalMinutes
-        yellowThresholdSeconds = yellowThreshold * 60
-        redThresholdSeconds = redThreshold * 60
+    func configure(totalSeconds: Int, yellowThresholdSeconds: Int, redThresholdSeconds: Int) {
+        self.totalSeconds = totalSeconds
+        self.yellowThresholdSeconds = yellowThresholdSeconds
+        self.redThresholdSeconds = redThresholdSeconds
         reset()
     }
 
@@ -67,7 +67,7 @@ class TimerViewModel: ObservableObject {
         timerCancellable?.cancel()
         flashCancellable?.cancel()
         isFlashWhite = false
-        remainingSeconds = totalMinutes * 60
+        remainingSeconds = totalSeconds
         updateZone()
     }
 
