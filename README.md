@@ -14,6 +14,8 @@ A simple iOS app to help speakers track their remaining time with color-coded vi
 - Optional gong sound when time is up
 - Configurable talk duration and warning thresholds
 - Screen stays awake during countdown
+- Background support: timer continues running when app is backgrounded
+- Push notifications for threshold warnings when in background
 
 ## Screenshots
 
