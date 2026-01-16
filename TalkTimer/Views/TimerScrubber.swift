@@ -43,7 +43,7 @@ struct TimerScrubber: View {
                                     isDragging = true
                                     let percent = max(0, min(1, value.location.x / geometry.size.width))
                                     let totalSeconds = viewModel.totalSeconds
-                                    viewModel.remainingSeconds = Int(Double(totalSeconds) * (1 - percent))
+                                    viewModel.scrub(toRemainingSeconds: Int(Double(totalSeconds) * (1 - percent)))
                                 }
                                 .onEnded { _ in
                                     isDragging = false

@@ -1,8 +1,16 @@
+import OSLog
 import UserNotifications
 
-class NotificationManager {
+protocol NotificationManaging {
+    func requestAuthorization()
+    func scheduleTimerNotifications(remainingSeconds: Int, yellowThreshold: Int, redThreshold: Int)
+    func cancelAllNotifications()
+}
+
+final class NotificationManager {
     static let shared = NotificationManager()
 
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "TalkTimer", category: "NotificationManager")
     private let notificationCenter = UNUserNotificationCenter.current()
 
     private init() {}
@@ -10,7 +18,7 @@ class NotificationManager {
     func requestAuthorization() {
         notificationCenter.requestAuthorization(options: [.alert, .sound]) { _, error in
             if let error {
-                print("Notification authorization error: \(error)")
+                self.logger.error("Notification authorization error: \(String(describing: error))")
             }
         }
     }
@@ -71,7 +79,7 @@ class NotificationManager {
 
         notificationCenter.add(request) { error in
             if let error {
-                print("Failed to schedule notification: \(error)")
+                self.logger.error("Failed to schedule notification: \(String(describing: error))")
             }
         }
     }
@@ -86,3 +94,5 @@ class NotificationManager {
         }
     }
 }
+
+extension NotificationManager: NotificationManaging {}

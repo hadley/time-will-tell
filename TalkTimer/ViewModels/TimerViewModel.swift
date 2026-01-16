@@ -1,4 +1,5 @@
 import Combine
+import OSLog
 import SwiftUI
 
 func zoneForTime(seconds: Int, yellowThreshold: Int, redThreshold: Int) -> TimerZone {
@@ -13,15 +14,17 @@ func zoneForTime(seconds: Int, yellowThreshold: Int, redThreshold: Int) -> Timer
     }
 }
 
-class TimerViewModel: ObservableObject {
-    @Published var remainingSeconds: Int = 0 {
+final class TimerViewModel: ObservableObject {
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "TalkTimer", category: "TimerViewModel")
+
+    @Published private(set) var remainingSeconds: Int = 0 {
         didSet {
             updateZone()
         }
     }
 
-    @Published var status: TimerStatus = .idle
-    @Published var currentZone: TimerZone = .black
+    @Published private(set) var status: TimerStatus = .idle
+    @Published private(set) var currentZone: TimerZone = .black
     @Published var isFlashWhite: Bool = false
 
     var totalSeconds: Int = 20 * 60
@@ -30,11 +33,12 @@ class TimerViewModel: ObservableObject {
 
     private var timerCancellable: AnyCancellable?
     private var flashCancellable: AnyCancellable?
-    private let hapticManager = HapticManager()
+    private let hapticManager: any HapticManaging
+    private let notificationManager: any NotificationManaging
+    private let timeProvider: any ElapsedTimeProviding
 
-    // For background time tracking
-    private(set) var timerStartDate: Date?
-    private(set) var remainingSecondsAtStart: Int = 0
+    // Monotonic deadline in `timeProvider` seconds. When nil, timer isn't running.
+    private var deadline: TimeInterval?
 
     var displayText: String {
         let minutes = remainingSeconds / 60
@@ -42,7 +46,14 @@ class TimerViewModel: ObservableObject {
         return String(format: "%2d:%02d", minutes, seconds)
     }
 
-    init() {
+    init(
+        timeProvider: any ElapsedTimeProviding = ContinuousUptimeElapsedTimeProvider(),
+        hapticManager: any HapticManaging = HapticManager(),
+        notificationManager: any NotificationManaging = NotificationManager.shared
+    ) {
+        self.timeProvider = timeProvider
+        self.hapticManager = hapticManager
+        self.notificationManager = notificationManager
         remainingSeconds = totalSeconds
         updateZone()
     }
@@ -56,56 +67,75 @@ class TimerViewModel: ObservableObject {
 
     func start() {
         status = .running
-        timerStartDate = Date()
-        remainingSecondsAtStart = remainingSeconds
+        stopFlashing()
+        deadline = timeProvider.now + TimeInterval(remainingSeconds)
         startTimer()
+        recomputeRemaining()
     }
 
     func pause() {
+        // Capture an accurate remaining time before stopping.
+        recomputeRemaining()
         status = .paused
         timerCancellable?.cancel()
-        flashCancellable?.cancel()
-        isFlashWhite = false
-        timerStartDate = nil
+        timerCancellable = nil
+        stopFlashing()
+        deadline = nil
     }
 
     func reset() {
         status = .idle
         timerCancellable?.cancel()
-        flashCancellable?.cancel()
-        isFlashWhite = false
-        timerStartDate = nil
+        timerCancellable = nil
+        stopFlashing()
+        deadline = nil
         remainingSeconds = totalSeconds
         updateZone()
     }
 
-    func handleReturnToForeground(now: Date = Date()) {
+    func handleReturnToForeground() {
         // Cancel background notifications since we're back in foreground
-        NotificationManager.shared.cancelAllNotifications()
+        notificationManager.cancelAllNotifications()
 
-        guard status == .running, let startDate = timerStartDate else { return }
-
-        let elapsedSeconds = Int(now.timeIntervalSince(startDate))
-        let newRemaining = max(0, remainingSecondsAtStart - elapsedSeconds)
-
-        remainingSeconds = newRemaining
-
-        if remainingSeconds <= 0 {
-            status = .finished
-            timerCancellable?.cancel()
-            startFlashing()
-            hapticManager.zoneTransition()
-        }
+        guard status == .running else { return }
+        recomputeRemaining()
+        startTimer()
     }
 
     func handleEnterBackground() {
         guard status == .running else { return }
+        recomputeRemaining()
 
-        NotificationManager.shared.scheduleTimerNotifications(
+        notificationManager.scheduleTimerNotifications(
             remainingSeconds: remainingSeconds,
             yellowThreshold: yellowThresholdSeconds,
             redThreshold: redThresholdSeconds
         )
+    }
+
+    func scrub(toRemainingSeconds newRemainingSeconds: Int) {
+        let clamped = min(max(newRemainingSeconds, 0), totalSeconds)
+
+        switch status {
+        case .running:
+            // Keep the deadline consistent with the user's chosen remaining time.
+            deadline = timeProvider.now + TimeInterval(clamped)
+            remainingSeconds = clamped
+
+            if clamped <= 0 {
+                transitionToFinishedIfNeeded()
+            }
+
+        case .finished:
+            // User is adjusting time after finishing; stop flashing and move to a paused state.
+            stopFlashing()
+            deadline = nil
+            status = .paused
+            remainingSeconds = clamped
+
+        case .paused, .idle:
+            remainingSeconds = clamped
+        }
     }
 
     func toggle() {
@@ -118,23 +148,35 @@ class TimerViewModel: ObservableObject {
     }
 
     private func startTimer() {
+        guard status == .running else { return }
+        // Avoid creating multiple timers when returning from background.
+        if timerCancellable != nil { return }
         timerCancellable = Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
-                self?.tick()
+                self?.recomputeRemaining()
             }
     }
 
-    private func tick() {
-        guard remainingSeconds > 0 else {
-            status = .finished
-            timerCancellable?.cancel()
-            startFlashing()
-            hapticManager.zoneTransition()
+    /// Recompute `remainingSeconds` from the monotonic deadline, ensuring there is no drift.
+    func recomputeRemaining() {
+        guard status == .running else { return }
+        guard let deadline else {
+            logger.error("Timer is running but deadline is nil; pausing to recover.")
+            forcePause()
             return
         }
-        remainingSeconds -= 1
-        updateZone()
+
+        let secondsLeft = deadline - timeProvider.now
+        let newRemaining = max(0, Int(ceil(secondsLeft)))
+
+        if newRemaining != remainingSeconds {
+            remainingSeconds = newRemaining
+        }
+
+        if newRemaining <= 0 {
+            transitionToFinishedIfNeeded()
+        }
     }
 
     private func updateZone() {
@@ -150,6 +192,15 @@ class TimerViewModel: ObservableObject {
         }
     }
 
+    private func transitionToFinishedIfNeeded() {
+        guard status != .finished else { return }
+        status = .finished
+        timerCancellable?.cancel()
+        timerCancellable = nil
+        deadline = nil
+        startFlashing()
+    }
+
     private func startFlashing() {
         currentZone = .flashing
         flashCancellable = Timer.publish(every: 1, on: .main, in: .common)
@@ -157,5 +208,19 @@ class TimerViewModel: ObservableObject {
             .sink { [weak self] _ in
                 self?.isFlashWhite.toggle()
             }
+    }
+
+    private func stopFlashing() {
+        flashCancellable?.cancel()
+        flashCancellable = nil
+        isFlashWhite = false
+    }
+
+    private func forcePause() {
+        status = .paused
+        timerCancellable?.cancel()
+        timerCancellable = nil
+        stopFlashing()
+        deadline = nil
     }
 }
