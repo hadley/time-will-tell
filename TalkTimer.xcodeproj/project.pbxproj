@@ -23,6 +23,7 @@
 		A1111111000000000000000F /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000E /* SoundManager.swift */; };
 		A11111110000000000000010 /* gong.wav in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000F /* gong.wav */; };
 		A11111110000000000000011 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000010 /* NotificationManager.swift */; };
+		A11111110000000000000012 /* ElapsedTimeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000011 /* ElapsedTimeProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		A1000000000000000000000E /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		A1000000000000000000000F /* gong.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gong.wav; sourceTree = "<group>"; };
 		A10000000000000000000010 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		A10000000000000000000011 /* ElapsedTimeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTimeProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 			children = (
 				A10000000000000000000007 /* HapticManager.swift */,
 				A10000000000000000000010 /* NotificationManager.swift */,
+				A10000000000000000000011 /* ElapsedTimeProvider.swift */,
 				A1000000000000000000000E /* SoundManager.swift */,
 			);
 			path = Utilities;
@@ -269,6 +272,7 @@
 				A11111110000000000000009 /* TimerScrubber.swift in Sources */,
 				A1111111000000000000000F /* SoundManager.swift in Sources */,
 				A11111110000000000000011 /* NotificationManager.swift in Sources */,
+				A11111110000000000000012 /* ElapsedTimeProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
