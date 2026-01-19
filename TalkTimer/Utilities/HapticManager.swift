@@ -1,7 +1,13 @@
 import CoreHaptics
+import OSLog
 import UIKit
 
-class HapticManager {
+protocol HapticManaging {
+    func zoneTransition()
+}
+
+final class HapticManager {
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "TalkTimer", category: "HapticManager")
     private var engine: CHHapticEngine?
 
     init() {
@@ -16,7 +22,7 @@ class HapticManager {
                 try? self?.engine?.start()
             }
         } catch {
-            print("Haptic engine failed to start: \(error)")
+            logger.error("Haptic engine failed to start: \(String(describing: error))")
         }
     }
 
@@ -34,7 +40,9 @@ class HapticManager {
             let player = try engine.makePlayer(with: pattern)
             try player.start(atTime: CHHapticTimeImmediate)
         } catch {
-            print("Failed to play haptic: \(error)")
+            logger.error("Failed to play haptic: \(String(describing: error))")
         }
     }
 }
+
+extension HapticManager: HapticManaging {}

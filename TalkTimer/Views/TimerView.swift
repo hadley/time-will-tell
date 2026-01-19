@@ -11,7 +11,7 @@ struct TimerView: View {
 
     @State private var showingSettings = false
 
-    private let soundManager = SoundManager()
+    private let soundManager: any SoundPlaying = SoundManager()
 
     var backgroundColor: Color {
         if viewModel.currentZone == .flashing {
