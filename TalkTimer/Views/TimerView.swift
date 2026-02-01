@@ -7,7 +7,7 @@ struct TimerView: View {
     @AppStorage("totalSeconds") private var totalSeconds: Int = 20 * 60
     @AppStorage("yellowThresholdSeconds") private var yellowThresholdSeconds: Int = 5 * 60
     @AppStorage("redThresholdSeconds") private var redThresholdSeconds: Int = 2 * 60
-    @AppStorage("playGongOnFinish") private var playGongOnFinish: Bool = false
+    @AppStorage("playGongOnFinish") private var playGongOnFinish: Bool = true
 
     @State private var showingSettings = false
 

@@ -136,6 +136,7 @@ final class TimerViewModel: ObservableObject {
             }
 
         case .finished:
+            guard clamped > 0 else { return }
             // User is adjusting time after finishing; stop flashing and move to a paused state.
             stopFlashing()
             deadline = nil
@@ -144,14 +145,25 @@ final class TimerViewModel: ObservableObject {
 
         case .paused, .idle:
             remainingSeconds = clamped
+            if clamped <= 0 {
+                transitionToFinishedIfNeeded()
+            }
         }
     }
 
     func toggle() {
         switch status {
         case .idle, .paused:
+            if remainingSeconds <= 0 {
+                reset()
+                start()
+            } else {
+                start()
+            }
+        case .finished:
+            reset()
             start()
-        case .running, .finished:
+        case .running:
             pause()
         }
     }

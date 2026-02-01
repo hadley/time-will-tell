@@ -18,6 +18,7 @@ struct TimerScrubber: View {
             Button(action: viewModel.toggle) {
                 Image(systemName: playPauseIcon)
                     .font(.system(size: 32))
+                    .frame(width: 32, height: 32)
             }
 
             GeometryReader { geometry in
@@ -58,6 +59,13 @@ struct TimerScrubber: View {
     }
 
     private var playPauseIcon: String {
-        (viewModel.status == .running || viewModel.status == .finished) ? "pause.fill" : "play.fill"
+        switch viewModel.status {
+        case .running:
+            "pause.fill"
+        case .finished:
+            "arrow.counterclockwise"
+        case .idle, .paused:
+            "play.fill"
+        }
     }
 }
