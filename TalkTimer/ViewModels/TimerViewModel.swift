@@ -31,6 +31,8 @@ final class TimerViewModel: ObservableObject {
     var yellowThresholdSeconds: Int = 5 * 60
     var redThresholdSeconds: Int = 2 * 60
 
+    var onFinish: (() -> Void)?
+
     private var timerCancellable: AnyCancellable?
     private var flashCancellable: AnyCancellable?
     private let hapticManager: any HapticManaging
@@ -201,6 +203,7 @@ final class TimerViewModel: ObservableObject {
 
     private func transitionToFinishedIfNeeded() {
         guard status != .finished else { return }
+        onFinish?()
         status = .finished
         timerCancellable?.cancel()
         timerCancellable = nil

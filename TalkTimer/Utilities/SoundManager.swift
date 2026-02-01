@@ -9,9 +9,12 @@ final class SoundManager {
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "TalkTimer", category: "SoundManager")
     private var audioPlayer: AVAudioPlayer?
 
-    func playGong() {
+    init() {
+        prepareGong()
+    }
+
+    func prepareGong() {
         do {
-            // Configure audio session for playback even in silent mode
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true)
 
@@ -21,10 +24,20 @@ final class SoundManager {
             }
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.prepareToPlay()
-            audioPlayer?.play()
         } catch {
-            logger.error("Failed to play gong sound: \(String(describing: error))")
+            logger.error("Failed to prepare gong sound: \(String(describing: error))")
         }
+    }
+
+    func playGong() {
+        guard let audioPlayer else {
+            logger.error("Audio player not prepared; cannot play gong.")
+            return
+        }
+        audioPlayer.currentTime = 0
+        audioPlayer.play()
+        // Re-prepare for next playback
+        audioPlayer.prepareToPlay()
     }
 }
 

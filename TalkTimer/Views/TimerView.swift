@@ -76,17 +76,17 @@ struct TimerView: View {
             UIApplication.shared.isIdleTimerDisabled = true
             NotificationManager.shared.requestAuthorization()
             applySettings()
+            viewModel.onFinish = { [soundManager] in
+                if UserDefaults.standard.bool(forKey: "playGongOnFinish") {
+                    soundManager.playGong()
+                }
+            }
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
         }
         .onChange(of: totalSeconds) { _ in
             validateThresholds()
-        }
-        .onChange(of: viewModel.status) { newStatus in
-            if newStatus == .finished, playGongOnFinish {
-                soundManager.playGong()
-            }
         }
         .onChange(of: scenePhase) { newPhase in
             switch newPhase {

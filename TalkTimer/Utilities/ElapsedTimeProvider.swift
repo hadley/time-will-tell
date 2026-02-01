@@ -1,5 +1,5 @@
-import Foundation
 import Darwin.Mach
+import Foundation
 
 /// Abstraction over a monotonic time source expressed in seconds.
 ///
@@ -29,4 +29,3 @@ final class ContinuousUptimeElapsedTimeProvider: ElapsedTimeProviding {
         return nanos / 1_000_000_000
     }
 }
-
